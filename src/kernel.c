@@ -1,67 +1,40 @@
-#define GPIO_BASE 0x3f200000UL
+#include <string.h>
+#include <stdlib.h>
 
-#define LED_GPFSEL GPIO_GPFSEL4
-#define LED_GPFBIT 21
-#define LED_GPSET GPIO_GPSET1
-#define LED_GPCLR GPIO_GPCLR1
-#define LED_GPIO_BIT 15
-#define GPIO_GPFSEL0 0
-#define GPIO_GPFSEL1 1
-#define GPIO_GPFSEL2 2
-#define GPIO_GPFSEL3 3
-#define GPIO_GPFSEL4 4
-#define GPIO_GPFSEL5 5
+#include "gpio.h"
 
-#define GPIO_GPSET0 7
-#define GPIO_GPSET1 8
+volatile unsigned int* gpio = (unsigned int*)GPIO_BASE;;
 
-#define GPIO_GPCLR0 10
-#define GPIO_GPCLR1 11
-
-#define GPIO_GPLEV0 13
-#define GPIO_GPLEV1 14
-
-#define GPIO_GPEDS0 16
-#define GPIO_GPEDS1 17
-
-#define GPIO_GPREN0 19
-#define GPIO_GPREN1 20
-
-#define GPIO_GPFEN0 22
-#define GPIO_GPFEN1 23
-
-#define GPIO_GPHEN0 25
-#define GPIO_GPHEN1 26
-
-#define GPIO_GPLEN0 28
-#define GPIO_GPLEN1 29
-
-#define GPIO_GPAREN0 31
-#define GPIO_GPAREN1 32
-
-#define GPIO_GPAFEN0 34
-#define GPIO_GPAFEN1 35
-
-#define GPIO_GPPUD 37
-#define GPIO_GPPUDCLK0 38
-#define GPIO_GPPUDCLK1 39
-
-volatile unsigned int* gpio;
-
-volatile unsigned int tim;
-
-int main(void) {
-  gpio = (unsigned int*)GPIO_BASE;
+void kernel_main(unsigned int r0, unsigned int r1, unsigned int atags) {
+  int loop;
+  // Allocate block of memory for counters
+  unsigned int* counters;
 
   gpio[LED_GPFSEL] |= (1 << LED_GPFBIT);
+  gpio[LED_GPSET] = (1 << LED_GPIO_BIT);
+
+  counters = malloc(1024 * sizeof(unsigned int));
+
+  // Failed to allocate memory
+  if (counters == NULL) {
+    while (1) {
+      // TRAP!!!
+    }
+  }
+
+  for (loop = 0; loop < 1024; loop++) {
+    counters[loop] = 0;
+  }
 
   while(1) {
-    for(tim = 0; tim < 500000; tim++);
-
-    gpio[LED_GPCLR] = (1 << LED_GPIO_BIT);
-    for(tim = 0; tim < 500000; tim++);
-
     gpio[LED_GPSET] = (1 << LED_GPIO_BIT);
+    for (counters[0] = 0; counters[0] < 500000; counters[0]++) {
+
+    }
+    gpio[LED_GPCLR] = (1 << LED_GPIO_BIT);
+    for (counters[0] = 0; counters[0] < 500000; counters[0]++) {
+
+    }
   }
 
 }
