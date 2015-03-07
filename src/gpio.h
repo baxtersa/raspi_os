@@ -1,7 +1,9 @@
 #ifndef GPIO_H
 #define GPIO_H
 
-#define GPIO_BASE 0x3f200000UL
+#include "base.h"
+
+#define GPIO_BASE 0x3F200000UL
 
 #define LED_GPFSEL GPIO_GPFSEL4
 #define LED_GPFBIT 21
@@ -49,5 +51,52 @@
 #define GPIO_GPPUD 37
 #define GPIO_GPPUDCLK0 38
 #define GPIO_GPPUDCLK1 39
+
+typedef struct {
+  reg_rw_t    m_rGPFSEL0;
+  reg_rw_t    m_rGPFSEL1;
+  reg_rw_t    m_rGPFSEL2;
+  reg_rw_t    m_rGPFSEL3;
+  reg_rw_t    m_rGPFSEL4;
+  reg_rw_t    m_rGPFSEL5;
+  reg_ro_t    m_rReserved0;
+  reg_wo_t    m_rGPSET0;
+  reg_wo_t    m_rGPSET1;
+  reg_ro_t    m_rReserved1;
+  reg_wo_t    m_rGPCLR0;
+  reg_wo_t    m_rGPCLR1;
+  reg_ro_t    m_rReserved2;
+  reg_wo_t    m_rGPLEV0;
+  reg_wo_t    m_rGPLEV1;
+  reg_ro_t    m_rReserved3;
+  reg_wo_t    m_rGPEDS0;
+  reg_wo_t    m_rGPEDS1;
+  reg_ro_t    m_rReserved4;
+  reg_wo_t    m_rGPREN0;
+  reg_wo_t    m_rGPREN1;
+  reg_ro_t    m_rReserved5;
+  reg_wo_t    m_rGPFEN0;
+  reg_wo_t    m_rGPFEN1;
+  reg_ro_t    m_rReserved6;
+  reg_wo_t    m_rGPHEN0;
+  reg_wo_t    m_rGPHEN1;
+  reg_ro_t    m_rReserved7;
+  reg_wo_t    m_rGPLEN0;
+  reg_wo_t    m_rGPLEN1;
+  reg_ro_t    m_rReserved8;
+  reg_wo_t    m_rGPAREN0;
+  reg_wo_t    m_rGPAREN1;
+  reg_ro_t    m_rReserved9;
+  reg_wo_t    m_rGPAFEN0;
+  reg_wo_t    m_rGPAFEN1;
+  reg_ro_t    m_rReserved10;
+  reg_wo_t    m_rGPPUD;
+  reg_wo_t    m_rGPPUDCLK0;
+  reg_wo_t    m_rGPPUDCLK1;
+  reg_ro_t    m_rReserved11;
+} gpio_t;
+
+extern gpio_t* GetGPIO(void);
+extern void GPIOInit(void);
 
 #endif

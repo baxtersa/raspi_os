@@ -23,7 +23,10 @@ add_executable(../kernel.elf
 	cstartup.c
 	cstubs.c
 	start.S
-	system_timer.c)
+	gpio.c
+	system_timer.c
+	armtimer.c
+	interrupts.c)
 
 add_custom_command(
 	TARGET ../kernel.elf POST_BUILD
