@@ -1,12 +1,17 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "gpio.h"
-#include "armtimer.h"
+#include "drivers/gpio.h"
+#include "peripherals/armtimer.h"
 #include "system_timer.h"
 #include "interrupts.h"
+#include "framebuffer.h"
 
 void kernel_main(unsigned int r0, unsigned int r1, unsigned int atags) {
+  // Bail if r0 != 0, as ATAG docs say it must be 0
+  if (r0 != 0) {
+    return;
+  }
 
   int ilit = 0;
 
@@ -25,6 +30,13 @@ void kernel_main(unsigned int r0, unsigned int r1, unsigned int atags) {
     | ARMTIMER_CTRL_ENABLE
     | ARMTIMER_CTRL_INT_ENABLE
     | ARMTIMER_CTRL_PRESCALE_256;
+
+  // Load framebuffer info and initialize
+  FrameBufferInit();
+
+  ClearFrameBuffer(MakeColor(0, 0xff, 0));
+  SetBackgroundColor(MakeColor(0xff, 0xff, 0xff));
+  SetForegroundColor(MakeColor(0, 0, 0xff));
 
   // Enable interrupts!
   _enable_interrupts();
