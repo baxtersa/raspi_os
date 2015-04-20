@@ -2,7 +2,7 @@
 #define ARMTIMER_H
 
 #include <stdint.h>
-#include "base.h"
+#include "../base.h"
 
 #define ARMTIMER_BASE 0x3F00B400
 

@@ -1,7 +1,7 @@
 #ifndef GPIO_H
 #define GPIO_H
 
-#include "base.h"
+#include "../base.h"
 
 #define GPIO_BASE 0x3F200000UL
 
