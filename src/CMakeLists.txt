@@ -23,9 +23,11 @@ add_executable(../kernel.elf
 	cstartup.c
 	cstubs.c
 	start.S
-	gpio.c
+	drivers/gpio.c
+	drivers/vcio.c
 	system_timer.c
-	armtimer.c
+	peripherals/armtimer.c
+	framebuffer.c
 	interrupts.c)
 
 add_custom_command(
