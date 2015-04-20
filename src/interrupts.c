@@ -1,8 +1,8 @@
 #include <stdint.h>
 #include <stdbool.h>
-#include "armtimer.h"
+#include "peripherals/armtimer.h"
 #include "base.h"
-#include "gpio.h"
+#include "drivers/gpio.h"
 #include "interrupts.h"
 
 static irq_controller_t* pIRQController = (irq_controller_t*)INTERRUPT_CONTROLLER_BASE;
