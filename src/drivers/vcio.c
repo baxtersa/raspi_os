@@ -1,36 +1,15 @@
 #include "vcio.h"
-
-#define M_BOX_FULL 0x80000000
-#define M_BOX_EMPTY 0x40000000
+#include "../mmio.h"
 
 #define M_BOX_READ   0x00
+#define M_BOX_POLL   0x10
+#define M_BOX_SENDER 0x14
 #define M_BOX_STATUS 0x18
+#define M_BOX_CONFIG 0x1c
 #define M_BOX_WRITE  0x20
 
 
 static uint32_t getMailboxStatus();
-
-
-int MailboxRead(uint8_t channel, uint32_t* pData28) {
-  // Return an error if we have an invalid channel
-  if (channel > 7) {
-    return -1;
-  }
-
-  // Loop until something is received on the channel
-  while (1) {
-    while (getMailboxStatus() & M_BOX_EMPTY) {
-      // Trap here until the mailbox has a message
-    }
-
-    pData28 = (uint32_t*) (M_BOX_BASE + M_BOX_READ);
-
-    if ((*pData28 & 0xF) == channel) {
-      *pData28 =  *pData28 >> 4;
-      return 0;
-    }
-  }
-}
 
 
 int MailboxWrite(uint8_t channel, uint32_t data28) {
@@ -44,11 +23,35 @@ int MailboxWrite(uint8_t channel, uint32_t data28) {
     // TRAP!!!
   }
 
-  *(uint32_t*)M_BOX_WRITE = data28 | channel;
+  mmio_write (M_BOX_BASE + M_BOX_WRITE, data28 | channel);
   return 0;
 }
 
 
+int MailboxRead(uint8_t channel) {
+  int mail;
+
+  // Return an error if we have an invalid channel
+  if (channel > 7) {
+    return -1;
+  }
+
+  while (getMailboxStatus() & M_BOX_EMPTY) {
+    // Trap here until the mailbox has a message
+  }
+  
+  mail = mmio_read (M_BOX_BASE + M_BOX_READ);
+  
+  // Return an error if we read from the wrong channel
+  if ((mail & 0xf) != channel) {
+    return -1;
+  }
+
+  // Return top 28 bits
+  return mail >> 4;
+}
+
+
 static uint32_t getMailboxStatus() {
-  return * (uint32_t*) (M_BOX_BASE + M_BOX_STATUS);
+  return mmio_read (M_BOX_BASE + M_BOX_STATUS);
 }

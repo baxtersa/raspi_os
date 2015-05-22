@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 static frame_buffer_t* pFrameBuffer = (frame_buffer_t*)M_BOX_BASE;
+static int g_initialized = 0;
 
 color_t colorBackground, colorForeground;
 
@@ -11,16 +12,33 @@ frame_buffer_t* GetFrameBuffer(void) {
 }
 
 void FrameBufferInit(void) {
+  int rc;  
+
   // Initialize screen size members
-  pFrameBuffer->m_uWidth = 800;
-  pFrameBuffer->m_uHeight = 600;
+  pFrameBuffer->m_uWidth = pFrameBuffer->m_uVirtualWidth = 800;
+  pFrameBuffer->m_uHeight = pFrameBuffer->m_uVirtualHeight = 600;
+  pFrameBuffer->m_uPitch = 0;
   pFrameBuffer->m_uDepth = 24;
 
   pFrameBuffer->m_uXOffset = pFrameBuffer->m_uYOffset = 0;
 
-  MailboxWrite(M_BOX_CHAN_FRAME_BUFFER, (uint32_t)pFrameBuffer + 0x40000000);
+  rc = MailboxWrite (M_BOX_CHAN_FRAME_BUFFER, (uint32_t)pFrameBuffer + M_BOX_EMPTY);
 
-  MailboxRead(M_BOX_CHAN_FRAME_BUFFER, (uint32_t*)pFrameBuffer);
+  if (rc < 0) {
+    while (1) {
+      // TRAP!!! We failed to write to our mailbox
+    }
+  }
+
+  rc = MailboxRead (M_BOX_CHAN_FRAME_BUFFER);
+
+  if (rc < 0) {
+    while (1) {
+      // TRAP!!! We faile to read from our mailbox
+    }
+  }
+
+  g_initialized = 1;
 }
 
 color_t MakeColor(uint8_t red, uint8_t green, uint8_t blue) {
@@ -29,6 +47,10 @@ color_t MakeColor(uint8_t red, uint8_t green, uint8_t blue) {
       .green = green,
       .blue = blue,
   };
+}
+
+int FrameBufferIsInitialized (void) {
+  return g_initialized;
 }
 
 static int setPixel(frame_buffer_t* pFrameBuffer, uint16_t x_pixel, uint16_t y_pixel, color_t color);
@@ -42,13 +64,8 @@ void ClearFrameBuffer(color_t color) {
     return;
   }
 
-  for (y = 0; y != pFrameBuffer->m_uVirtualHeight; y++) {
-    for (x = 0; x != pFrameBuffer->m_uVirtualWidth; x++) {
-      if (setPixel(pFrameBuffer, x, y, color) < 0) {
-	// Trap here if we fail to set a pixel color
-	continue;
-      }
-    }
+  for (y = 0; y != pFrameBuffer->m_uHeight; y++) {
+    HorizontalLine (color, 0, pFrameBuffer->m_uWidth, y);
   }
 }
 
@@ -67,6 +84,25 @@ static int setPixel(frame_buffer_t* pFrameBuffer, uint16_t x_pixel, uint16_t y_p
   *((uint8_t*) pFrameBuffer->m_pBuffer + offset + 2) = color.blue;
 
   return 0;
+}
+
+void HorizontalLine (color_t color, int x0, int x1, int y) {
+  int x;
+  
+  for (x = x0; x < x1; x++) {
+    if (setPixel (pFrameBuffer, x, y, color) < 0) {
+      // Break here if we fail to set a pixel
+      continue;
+    }
+  }
+}
+
+void VerticalLine (color_t color, int y0, int y1, int x) {
+  int y;
+
+  for (y = y0; y < y1; y++) {
+    setPixel (pFrameBuffer, x, y, color);
+  }
 }
 
 void SetBackgroundColor(color_t color) {
