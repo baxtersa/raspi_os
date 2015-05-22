@@ -21,7 +21,6 @@ set(CMAKE_EXE_LINKER_FLAGS "-Wl,-T,${PROJECT_SOURCE_DIR}/rpi.x")
 add_executable(../kernel.elf
 	kernel.c
 	cstartup.c
-	cstubs.c
 	start.S
 	drivers/gpio.c
 	drivers/vcio.c
