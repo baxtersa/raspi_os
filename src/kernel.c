@@ -13,9 +13,6 @@ void kernel_main (uint32_t r0, uint32_t r1, uint32_t *atags) {
     uint32_t memory_total;
     int ilit = 0;
 
-    // Detect Hardware
-    DetectATAGs (atags);
-    
     // Enable GPIO output
     GetGPIO ()->m_rGPFSEL4 |= (1 << LED_GPFBIT);
     
@@ -49,9 +46,6 @@ void kernel_main (uint32_t r0, uint32_t r1, uint32_t *atags) {
     SetBackgroundColor (MakeColor (0xff, 0xff, 0xff));
     SetForegroundColor (MakeColor (0, 0, 0xff));
     HorizontalLine (MakeColor (0x23, 0x81, 0xF2), 0, 800, 300);
-
-    // Get amount of RAM from ATAGs
-    memory_total = DetectTotalRAM (atags);
 
     // Never exit
     while (1) {
