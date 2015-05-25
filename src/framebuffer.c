@@ -3,6 +3,8 @@
 #include <stdio.h>
 
 static frame_buffer_t* pFrameBuffer = (frame_buffer_t*) M_BOX_BASE;
+static unsigned char pScreenPixels [800*600*3];
+
 static int g_initialized = 0;
 
 color_t colorBackground, colorForeground;
@@ -56,7 +58,7 @@ int FrameBufferIsInitialized (void) {
 static int setPixel (frame_buffer_t* pFrameBuffer, uint16_t x_pixel, uint16_t y_pixel, color_t color);
 
 void ClearFrameBuffer (color_t color) {
-    uint16_t x, y;
+    uint32_t x, y;
     
     frame_buffer_t* pFrameBuffer = GetFrameBuffer ();
     if (!pFrameBuffer) {
@@ -76,12 +78,13 @@ static int setPixel (frame_buffer_t* pFrameBuffer, uint16_t x_pixel, uint16_t y_
 	return -1;
     }
     
-    uint32_t offset = (x_pixel + (y_pixel + pFrameBuffer->m_uVirtualWidth)) * 
-	(pFrameBuffer->m_uDepth / 8);
-    
-    *((uint8_t*) pFrameBuffer->m_pBuffer + offset) = color.red;
-    *((uint8_t*) pFrameBuffer->m_pBuffer + offset + 1) = color.green;
-    *((uint8_t*) pFrameBuffer->m_pBuffer + offset + 2) = color.blue;
+    uint8_t *fb = pScreenPixels;
+
+    uint32_t uOffset = x_pixel * 3;
+
+    fb [(y_pixel*pFrameBuffer->m_uPitch) + (uOffset) + 0] = color.red;
+    fb [(y_pixel*pFrameBuffer->m_uPitch) + (uOffset) + 1] = color.green;
+    fb [(y_pixel*pFrameBuffer->m_uPitch) + (uOffset) + 2] = color.blue;
     
     return 0;
 }
@@ -111,4 +114,41 @@ void SetBackgroundColor(color_t color) {
 
 void SetForegroundColor(color_t color) {
     colorForeground = color;
+}
+
+void GradientFB (void) {
+    int x;
+    int r, g, b;
+
+    for (x=0; x < pFrameBuffer->m_uWidth; x++) {
+	r = x*255;
+	g = x % 2 == 0 ?
+	    x*255 :
+	    255 * (pFrameBuffer->m_uWidth - x);
+	b = 255 * (pFrameBuffer->m_uWidth - x);
+	VerticalLine (MakeColor (r, g, b), 0,
+		      pFrameBuffer->m_uHeight, x);
+    }
+
+    framebuffer_push();
+}
+
+void *int_memcpy (void *dest, const void *src, size_t n) {
+    int i;
+
+    int *d = dest;
+    const int *s = src;
+
+    for (i = 0; i < n / 4; i++) {
+	*d = *s;
+	d++;
+	s++;
+    }
+
+    return dest;
+}
+
+int framebuffer_push (void) {
+    int_memcpy ((uint8_t*) pFrameBuffer->m_pBuffer,
+		pScreenPixels, 800*600*3);
 }

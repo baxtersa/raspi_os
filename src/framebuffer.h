@@ -34,4 +34,6 @@ extern void VerticalLine (color_t color, int y0, int y1, int x);
 extern void SetBackgroundColor (color_t color);
 extern void SetForegroundColor (color_t color);
 
+extern void GradientFB (void);
+
 #endif
