@@ -32,6 +32,13 @@ void kernel_main (unsigned int r0, unsigned int r1, unsigned int atags) {
     
     // Load framebuffer info and initialize
     FrameBufferInit ();
+
+    if (!FrameBufferIsInitialized ()) {
+	while (1) {
+	    printf ("Frame buffer initialization failed!\n");
+	    // TRAP!!!
+	}
+    }
     
     ClearFrameBuffer (MakeColor(0, 0xff, 0xff));
     SetBackgroundColor (MakeColor(0xff, 0xff, 0xff));
