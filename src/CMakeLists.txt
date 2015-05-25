@@ -20,14 +20,19 @@ set(CMAKE_EXE_LINKER_FLAGS "-Wl,-T,${PROJECT_SOURCE_DIR}/rpi.x")
 
 add_executable(../kernel.elf
 	kernel.c
-	cstartup.c
+
 	start.S
+
+	atags.c
+	cstartup.c
+	framebuffer.c
+	interrupts.c
+	system_timer.c	
+
 	drivers/gpio.c
 	drivers/vcio.c
-	system_timer.c
-	peripherals/armtimer.c
-	framebuffer.c
-	interrupts.c)
+	
+	peripherals/armtimer.c)
 
 add_custom_command(
 	TARGET ../kernel.elf POST_BUILD
