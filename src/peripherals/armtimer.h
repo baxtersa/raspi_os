@@ -19,18 +19,18 @@
 #define ARMTIMER_CTRL_DISABLE (0 << 7)
 
 typedef struct {
-  volatile uint32_t m_uLoad,
-    m_uValue,
-    m_uControl,
-    m_uIRQClear,
-    m_uRAWIRQ,
-    m_uMaskedIRQ,
-    m_uReload,
-    m_uPreDivider,
-    m_uFreeRunningCounter;
+    volatile uint32_t m_uLoad,
+	m_uValue,
+	m_uControl,
+	m_uIRQClear,
+	m_uRAWIRQ,
+	m_uMaskedIRQ,
+	m_uReload,
+	m_uPreDivider,
+	m_uFreeRunningCounter;
 } arm_timer_t;
 
-extern arm_timer_t* GetARMTimer(void);
-extern void ARMTimerInit(void);
+extern arm_timer_t* GetARMTimer (void);
+extern void ARMTimerInit (void);
 
 #endif

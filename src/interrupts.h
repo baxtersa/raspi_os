@@ -16,18 +16,18 @@
 #define BASIC_ACCESS_ERROR_0_IRQ (1 << 7)
 
 typedef struct {
-  volatile uint32_t m_uIRQBasicPending;
-  volatile uint32_t m_uIRQPending1;
-  volatile uint32_t m_uIRQPending2;
-  volatile uint32_t m_uFIQControl;
-  volatile uint32_t m_uEnableIRQs1;
-  volatile uint32_t m_uEnableIRQs2;
-  volatile uint32_t m_uEnableBasicIRQs;
-  volatile uint32_t m_uDisableIRQs1;
-  volatile uint32_t m_uDisableIRQs2;
-  volatile uint32_t m_uDisableBasicIRQs;
+    volatile uint32_t m_uIRQBasicPending;
+    volatile uint32_t m_uIRQPending1;
+    volatile uint32_t m_uIRQPending2;
+    volatile uint32_t m_uFIQControl;
+    volatile uint32_t m_uEnableIRQs1;
+    volatile uint32_t m_uEnableIRQs2;
+    volatile uint32_t m_uEnableBasicIRQs;
+    volatile uint32_t m_uDisableIRQs1;
+    volatile uint32_t m_uDisableIRQs2;
+    volatile uint32_t m_uDisableBasicIRQs;
 } irq_controller_t;
 
-extern irq_controller_t* GetIRQController(void);
+extern irq_controller_t* GetIRQController (void);
 
 #endif

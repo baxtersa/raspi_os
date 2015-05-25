@@ -15,7 +15,7 @@
 #define M_BOX_CHAN_PROPERTY 8 // For use by the property channel
 #define M_BOX_CHAN_COUNT 9
 
-extern int MailboxWrite(uint8_t channel, uint32_t data28);
-extern int MailboxRead(uint8_t channel);
+extern int MailboxWrite (uint8_t channel, uint32_t data28);
+extern int MailboxRead (uint8_t channel);
 
 #endif
