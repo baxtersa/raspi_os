@@ -1,6 +1,8 @@
 #ifndef ATAGS_H
 #define ATAGS_H
 
+#include <stdint.h>
+
 #define ATAG_NONE       0x00000000  // 2 Empty tag used to end list
 #define ATAG_CORE       0x54410001  // 5 (2 if empty) First tag used to start list
 #define ATAG_MEM        0x54410002  // 4 Describes a physical area of memory

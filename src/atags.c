@@ -1,5 +1,4 @@
 #include "atags.h"
-#include <stdint.h>
 #include <stdio.h>
 
 void DetectATAGs (uint32_t *atags) {
