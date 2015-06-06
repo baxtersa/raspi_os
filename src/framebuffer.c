@@ -16,20 +16,24 @@ frame_buffer_t* GetFrameBuffer (void) {
 }
 
 void FrameBufferInit (void) {
+    frame_buffer_t fb_info __attribute__ ((aligned(16)));
     int rc;  
     
     // Initialize screen size members
-    frameBuffer.m_uWidth = frameBuffer.m_uVirtualWidth = 800;
-    frameBuffer.m_uHeight = frameBuffer.m_uVirtualHeight = 600;
-    frameBuffer.m_uPitch = 0;
-    frameBuffer.m_uDepth = 24;
+    fb_info.m_uWidth = 800;
+    fb_info.m_uVirtualWidth = 800;
+    fb_info.m_uHeight = 600;
+    fb_info.m_uVirtualHeight = 600;
+    fb_info.m_uPitch = 0;
+    fb_info.m_uDepth = 24;
     
-    frameBuffer.m_uXOffset = frameBuffer.m_uYOffset = 0;
+    fb_info.m_uXOffset = 0;
+    fb_info.m_uYOffset = 0;
     
-    frameBuffer.m_pBuffer = 0;
-    frameBuffer.m_uSize = 0;
+    fb_info.m_pBuffer = 0;
+    fb_info.m_uSize = 0;
     
-    rc = MailboxWrite (M_BOX_CHAN_FRAME_BUFFER, (uint32_t) (&frameBuffer) + M_BOX_EMPTY);
+    rc = MailboxWrite (M_BOX_CHAN_FRAME_BUFFER, (uint32_t) (&fb_info) + M_BOX_EMPTY);
     
     if (rc < 0) {
         while (1) {
@@ -44,6 +48,12 @@ void FrameBufferInit (void) {
             // TRAP!!! We faile to read from our mailbox
         }
     }
+    
+    frameBuffer.m_pBuffer = (uint32_t)fb_info.m_pBuffer;
+    frameBuffer.m_uWidth = fb_info.m_uWidth;
+    frameBuffer.m_uHeight = fb_info.m_uHeight;
+    frameBuffer.m_uPitch = fb_info.m_uPitch;
+    frameBuffer.m_uDepth = fb_info.m_uDepth;
     
     g_initialized = 1;
 }
