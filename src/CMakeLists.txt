@@ -12,7 +12,7 @@ project(../kernel.elf C ASM)
 # program compilation test.  So unset it explicitly before re-
 # setting it correctly for our system
 unset(CMAKE_C_FLAGS)
-set(CMAKE_C_FLAGS "-O0 -mfpu=vfp -mfloat-abi=hard -march=armv7-a -mtune=cortex-a7 -nostartfiles")
+set(CMAKE_C_FLAGS "-g -O0 -mfpu=vfp -mfloat-abi=hard -march=armv7-a -mtune=cortex-a7 -nostartfiles")
 
 # Set the linker flags so that we use our "custom" linker
 # script
