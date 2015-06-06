@@ -43,10 +43,8 @@ void kernel_main (uint32_t r0, uint32_t r1, uint32_t *atags) {
     }
     
     ClearFrameBuffer (MakeColor (0, 0xff, 0xff));
-    SetBackgroundColor (MakeColor (0xff, 0xff, 0xff));
-    SetForegroundColor (MakeColor (0, 0, 0xff));
-    HorizontalLine (MakeColor (0x23, 0x81, 0xF2), 0, 800, 300);
-
+    GradientFB ();
+    
     // Never exit
     while (1) {
 	printf ("Trapped in kernel.c!\n");
