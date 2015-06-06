@@ -25,7 +25,7 @@ typedef struct {
 extern color_t MakeColor (uint8_t red, uint8_t green, uint8_t blue);
 
 extern void FrameBufferInit (void);
-extern frame_buffer_t* GetFrameBuffer (void);
+extern frame_buffer_t GetFrameBuffer (void);
 
 extern int FrameBufferIsInitialized (void);
 extern void ClearFrameBuffer (color_t color);
