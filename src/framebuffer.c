@@ -11,8 +11,8 @@ static int g_initialized = 0;
 
 color_t colorBackground, colorForeground;
 
-frame_buffer_t* GetFrameBuffer (void) {
-    return &frameBuffer;
+frame_buffer_t GetFrameBuffer (void) {
+    return frameBuffer;
 }
 
 void FrameBufferInit (void) {
@@ -75,22 +75,18 @@ static int setPixel (uint16_t x_pixel, uint16_t y_pixel, color_t color);
 void ClearFrameBuffer (color_t color) {
     uint32_t x, y;
     
-    frame_buffer_t* pFrameBuffer = GetFrameBuffer ();
-    if (!pFrameBuffer) {
-	// Trap here if we don't have a valid frame buffer
-	return;
-    }
+    frame_buffer_t pFrameBuffer = GetFrameBuffer ();
     
-    for (y = 0; y != pFrameBuffer->m_uHeight; y++) {
-	HorizontalLine (color, 0, pFrameBuffer->m_uWidth, y);
+    for (y = 0; y != pFrameBuffer.m_uHeight; y++) {
+        HorizontalLine (color, 0, pFrameBuffer.m_uWidth, y);
     }
 }
 
 static int setPixel (uint16_t x_pixel, uint16_t y_pixel, color_t color) {
-    frame_buffer_t* pFrameBuffer = GetFrameBuffer ();
+    frame_buffer_t pFrameBuffer = GetFrameBuffer ();
     // Return an error if we try to set a pixel out of bounds
-    if (x_pixel > pFrameBuffer->m_uVirtualWidth ||
-        y_pixel > pFrameBuffer->m_uVirtualHeight) {
+    if (x_pixel > pFrameBuffer.m_uVirtualWidth ||
+        y_pixel > pFrameBuffer.m_uVirtualHeight) {
         return -1;
     }
     
@@ -98,9 +94,9 @@ static int setPixel (uint16_t x_pixel, uint16_t y_pixel, color_t color) {
 
     uint32_t uOffset = x_pixel * 3;
 
-    fb [(y_pixel*pFrameBuffer->m_uPitch) + (uOffset) + 0] = color.red;
-    fb [(y_pixel*pFrameBuffer->m_uPitch) + (uOffset) + 1] = color.green;
-    fb [(y_pixel*pFrameBuffer->m_uPitch) + (uOffset) + 2] = color.blue;
+    fb [(y_pixel*pFrameBuffer.m_uPitch) + (uOffset) + 0] = color.red;
+    fb [(y_pixel*pFrameBuffer.m_uPitch) + (uOffset) + 1] = color.green;
+    fb [(y_pixel*pFrameBuffer.m_uPitch) + (uOffset) + 2] = color.blue;
     
     return 0;
 }
@@ -109,10 +105,7 @@ void HorizontalLine (color_t color, int x0, int x1, int y) {
     int x;
     
     for (x = x0; x < x1; x++) {
-        if (setPixel (x, y, color) < 0) {
-            // Break here if we fail to set a pixel
-            continue;
-        }
+        setPixel (x, y, color);
     }
 }
 
@@ -133,18 +126,18 @@ void SetForegroundColor(color_t color) {
 }
 
 void GradientFB (void) {
-    frame_buffer_t* pFrameBuffer = GetFrameBuffer ();
+    frame_buffer_t pFrameBuffer = GetFrameBuffer ();
     int x;
     int r, g, b;
 
-    for (x=0; x < pFrameBuffer->m_uWidth; x++) {
+    for (x=0; x < pFrameBuffer.m_uWidth; x++) {
         r = x*255;
         g = x % 2 == 0 ?
             x*255 :
-            255 * (pFrameBuffer->m_uWidth - x);
-        b = 255 * (pFrameBuffer->m_uWidth - x);
+            255 * (pFrameBuffer.m_uWidth - x);
+        b = 255 * (pFrameBuffer.m_uWidth - x);
         VerticalLine (MakeColor (r, g, b), 0,
-                  pFrameBuffer->m_uHeight, x);
+                  pFrameBuffer.m_uHeight, x);
     }
 
     framebuffer_push();
