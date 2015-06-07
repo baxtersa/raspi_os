@@ -35,19 +35,19 @@ void kernel_main (uint32_t r0, uint32_t r1, uint32_t *atags) {
     // Load framebuffer info and initialize
     FrameBufferInit ();
 
-//    if (!FrameBufferIsInitialized ()) {
-//        while (1) {
-//            printf ("Frame buffer initialization failed!\n");
-//            // TRAP!!!
-//        }
-//    }
+    if (!FrameBufferIsInitialized ()) {
+        while (1) {
+            printf ("Frame buffer initialization failed!\n");
+            // TRAP!!!
+        }
+    }
     
     ClearFrameBuffer (MakeColor (0, 0xff, 0xff));
     GradientFB ();
     
     // Never exit
     while (1) {
-        printf ("Trapped in kernel.c!\n");
-        // TRAP!!!
+//        printf ("Trapped in kernel.c!\n");
+//        // TRAP!!!
     }
 }

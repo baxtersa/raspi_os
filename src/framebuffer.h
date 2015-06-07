@@ -20,7 +20,7 @@ typedef struct {
 	m_uYOffset,
 	m_pBuffer,
 	m_uSize;
-} frame_buffer_t;
+} __attribute__ ((aligned(16))) frame_buffer_t;
 
 extern color_t MakeColor (uint8_t red, uint8_t green, uint8_t blue);
 

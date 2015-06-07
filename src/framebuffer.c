@@ -5,7 +5,7 @@
 #define SCREEN_SIZE 800*600*3
 
 static frame_buffer_t frameBuffer;
-static unsigned char pScreenPixels [SCREEN_SIZE];
+static unsigned char pScreenPixels [(uint32_t) SCREEN_SIZE];
 
 static int g_initialized = 0;
 
@@ -80,13 +80,15 @@ void ClearFrameBuffer (color_t color) {
     for (y = 0; y != pFrameBuffer.m_uHeight; y++) {
         HorizontalLine (color, 0, pFrameBuffer.m_uWidth, y);
     }
+    
+    framebuffer_push ();
 }
 
 static int setPixel (uint16_t x_pixel, uint16_t y_pixel, color_t color) {
     frame_buffer_t pFrameBuffer = GetFrameBuffer ();
     // Return an error if we try to set a pixel out of bounds
-    if (x_pixel > pFrameBuffer.m_uVirtualWidth ||
-        y_pixel > pFrameBuffer.m_uVirtualHeight) {
+    if (x_pixel > pFrameBuffer.m_uWidth ||
+        y_pixel > pFrameBuffer.m_uHeight) {
         return -1;
     }
     

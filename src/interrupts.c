@@ -17,10 +17,10 @@ void __attribute__((interrupt("ABORT"))) reset_vector (void) {
 }
 
 void __attribute__((interrupt("UNDEF"))) undefined_instruction_vector (void) {
-//    while(1) {
-//	printf ("Stuck in UNDEF interrupt loop!\n");
-//	// TRAP!!!
-//    }
+    while(1) {
+        printf ("Stuck in UNDEF interrupt loop!\n");
+        // TRAP!!!
+    }
 }
 
 void __attribute__((interrupt("SWI"))) software_interrupt_vector (void) {
