@@ -42,7 +42,7 @@ void kernel_main (uint32_t r0, uint32_t r1, uint32_t *atags) {
         }
     }
     
-    ClearFrameBuffer (MakeColor (0, 0xff, 0xff));
+    ClearFrameBuffer (MakeColor (0, 0, 0));
     GradientFB ();
     
     // Never exit
