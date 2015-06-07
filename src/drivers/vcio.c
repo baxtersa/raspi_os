@@ -1,13 +1,6 @@
 #include "vcio.h"
-#include "../mmio.h"
 
-#define M_BOX_READ   0x00
-#define M_BOX_POLL   0x10
-#define M_BOX_SENDER 0x14
-#define M_BOX_STATUS 0x18
-#define M_BOX_CONFIG 0x1c
-#define M_BOX_WRITE  0x20
-
+#define M_BOX_MSG(data28,chan)  (((data28) & ~0xf) | ((chan) & 0xf))
 
 static uint32_t getMailboxStatus ();
 
@@ -28,7 +21,7 @@ int MailboxWrite (uint8_t channel, uint32_t data28) {
         // TRAP!!!
     }
     
-    mmio_write (M_BOX_BASE + M_BOX_WRITE, data28 | channel);
+    mmio_write ((uint32_t) M_BOX_BASE + (uint32_t) M_BOX_WRITE, M_BOX_MSG(data28, channel));
     return 0;
 }
 

@@ -43,11 +43,11 @@ void __attribute__((interrupt("IRQ"))) interrupt_vector (void) {
     
     // Flip the LED
     if (lit) {
-	GetGPIO ()->m_rGPSET1 = (1 << LED_GPIO_BIT);
-	lit = 0;
+        GetGPIO ()->m_rGPSET1 = (1 << LED_GPIO_BIT);
+        lit = 0;
     } else {
-	GetGPIO ()->m_rGPCLR1 = (1 << LED_GPIO_BIT);
-	lit = 1;    
+        GetGPIO ()->m_rGPCLR1 = (1 << LED_GPIO_BIT);
+        lit = 1;    
     }
 }
 

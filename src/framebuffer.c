@@ -17,13 +17,13 @@ frame_buffer_t GetFrameBuffer (void) {
 
 void FrameBufferInit (void) {
     frame_buffer_t fb_info __attribute__ ((aligned(16)));
-    int rc;  
+    int rc;
     
     // Initialize screen size members
-    fb_info.m_uWidth = 800;
-    fb_info.m_uVirtualWidth = 800;
-    fb_info.m_uHeight = 600;
-    fb_info.m_uVirtualHeight = 600;
+    fb_info.m_uWidth = 640;
+    fb_info.m_uVirtualWidth = 480;
+    fb_info.m_uHeight = 640;
+    fb_info.m_uVirtualHeight = 480;
     fb_info.m_uPitch = 0;
     fb_info.m_uDepth = 24;
     
@@ -45,7 +45,7 @@ void FrameBufferInit (void) {
     
     if (rc < 0) {
         while (1) {
-            // TRAP!!! We faile to read from our mailbox
+            // TRAP!!! We failed to read from our mailbox
         }
     }
     
@@ -54,7 +54,7 @@ void FrameBufferInit (void) {
     frameBuffer.m_uHeight = fb_info.m_uHeight;
     frameBuffer.m_uPitch = fb_info.m_uPitch;
     frameBuffer.m_uDepth = fb_info.m_uDepth;
-    
+
     g_initialized = 1;
 }
 
@@ -129,17 +129,21 @@ void SetForegroundColor(color_t color) {
 
 void GradientFB (void) {
     frame_buffer_t pFrameBuffer = GetFrameBuffer ();
-    int x;
+    int x, y;
     int r, g, b;
-
-    for (x=0; x < pFrameBuffer.m_uWidth; x++) {
-        r = x*255;
-        g = x % 2 == 0 ?
-            x*255 :
-            255 * (pFrameBuffer.m_uWidth - x);
-        b = 255 * (pFrameBuffer.m_uWidth - x);
-        VerticalLine (MakeColor (r, g, b), 0,
-                  pFrameBuffer.m_uHeight, x);
+    int height = pFrameBuffer.m_uHeight;
+    int width = pFrameBuffer.m_uWidth;
+    
+    for (x=0; x < width; x++) {
+        for (y=0; y < height; y++) {
+            r = x*255 / width - y*255 / height;
+            r *= r < 0 ? -1 : 1;
+            g = 255 * (width - x) / width - y*255 / height;
+            g *= g < 0 ? -1 : 1;
+            b = 255 * (width - x) / width - (255 * (height - y)) / height;
+            b *= b < 0 ? -1 : 1;
+            setPixel (x, y, MakeColor (r, g, b));
+        }
     }
 
     framebuffer_push();

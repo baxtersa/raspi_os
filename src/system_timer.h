@@ -5,7 +5,7 @@
 
 #include "base.h"
 
-#define RPI_SYSTIMER_BASE 0x3f003000
+#define RPI_SYSTIMER_BASE 0x3F003000
 
 typedef struct {
     volatile uint32_t counter_status;
