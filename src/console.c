@@ -9,7 +9,7 @@ static uint32_t FONT_SIZE = 8;
 static unsigned char *pFont = (unsigned char*) tb_font;
 
 #define CONSOLE_X 80
-#define CONSOLE_Y 35
+#define CONSOLE_Y 50
 
 static uint8_t text_console[CONSOLE_X][CONSOLE_Y];
 static color_t text_color[CONSOLE_X][CONSOLE_Y];
@@ -170,13 +170,13 @@ int console_write (const char *buffer, int nLength) {
         }
         
         // New Line
-        if (xConsolePos > CONSOLE_X) {
+        if (xConsolePos >= CONSOLE_X) {
             xConsolePos = 0;
             yConsolePos++;
         }
         
         // Scroll
-        if (yConsolePos > CONSOLE_Y) {
+        if (yConsolePos >= CONSOLE_Y) {
             
         }
     }
