@@ -3,7 +3,7 @@
 
 #include "../mmio.h"
 
-#define M_BOX_BASE   0x3F00B880
+#define M_BOX_BASE   0x2000B880
 
 #define M_BOX_FULL 0x80000000
 #define M_BOX_EMPTY 0x40000000
