@@ -28,3 +28,7 @@ If you want to get real fancy, you can hopefully spend less time than I did buil
 ```(GDB)$ target remote tcp::1234```
 
 to attach to the emulated kernel.  You should then be able to set breakpoints and begin execution by continuing.
+
+### Resources
+
+Gitter: [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/baxtersa/raspi_os?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
