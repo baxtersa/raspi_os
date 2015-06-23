@@ -17,8 +17,9 @@ static color_t text_color[CONSOLE_X][CONSOLE_Y];
 static int xConsolePos = 0;
 static int yConsolePos = 0;
 
-static color_t FOREGROUND_COLOR = {0, 0, 0};
-static color_t BACKGROUND_COLOR = {0xff, 0xff, 0xff};
+static color_t FOREGROUND_COLOR = {0, 0xff, 0},
+               BACKGROUND_COLOR = {0, 0, 0};
+
 
 static color_t ansi_colors[16] = {
     /* black */
