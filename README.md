@@ -1,4 +1,6 @@
 # raspi_os
+
+[![Join the chat at https://gitter.im/baxtersa/raspi_os](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/baxtersa/raspi_os?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 raspi_os is my hobby project.  It is a bare-metal operating system for the Raspberry Pi 2, currently featuring minimal framebuffer and text support.  Additional capabilities will be added as I have time.  My current todo list looks a little like this:
 
 1. Clean up of framebuffer and console code to stylistically match the rest of the codebase
