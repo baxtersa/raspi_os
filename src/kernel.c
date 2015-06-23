@@ -5,6 +5,7 @@
 #include "drivers/gpio.h"
 #include "peripherals/armtimer.h"
 #include "atags.h"
+#include "console.h"
 #include "framebuffer.h"
 #include "interrupts.h"
 #include "system_timer.h"
@@ -12,7 +13,7 @@
 void kernel_main (uint32_t r0, uint32_t r1, uint32_t *atags) {
     uint32_t memory_total;
     int ilit = 0;
-
+    
     // Enable GPIO output
     GetGPIO ()->m_rGPFSEL4 |= (1 << LED_GPFBIT);
     
@@ -29,9 +30,6 @@ void kernel_main (uint32_t r0, uint32_t r1, uint32_t *atags) {
 	| ARMTIMER_CTRL_INT_ENABLE
 	| ARMTIMER_CTRL_PRESCALE_256;
     
-    // Enable interrupts!
-    _enable_interrupts ();
-    
     // Load framebuffer info and initialize
     FrameBufferInit ();
 
@@ -42,8 +40,13 @@ void kernel_main (uint32_t r0, uint32_t r1, uint32_t *atags) {
         }
     }
     
-    ClearFrameBuffer (MakeColor (0, 0, 0));
-    GradientFB ();
+    console_init();
+    char* msg = "Welcome to MyOS!";
+    console_write (msg, strlen(msg));
+    free (msg);
+
+    // Enable interrupts!
+    _enable_interrupts ();
     
     // Never exit
     while (1) {
