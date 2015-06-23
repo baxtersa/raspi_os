@@ -140,7 +140,7 @@ void GradientFB (void) {
             g *= g < 0 ? -1 : 1;
             b = 255 * (width - x) / width - (255 * (height - y)) / height;
             b *= b < 0 ? -1 : 1;
-            setPixel (x, y, MakeColor (r, g, b));
+            SetPixel (x, y, MakeColor (r, g, b));
         }
     }
 
@@ -163,6 +163,6 @@ void *int_memcpy (void *dest, const void *src, size_t n) {
 }
 
 int framebuffer_push (void) {
-    return int_memcpy ((uint8_t*) frameBuffer.m_pBuffer,
+    int_memcpy ((uint8_t*) frameBuffer.m_pBuffer,
                        pScreenPixels, SCREEN_SIZE);
 }
