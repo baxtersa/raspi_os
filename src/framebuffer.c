@@ -70,8 +70,6 @@ int FrameBufferIsInitialized (void) {
     return g_initialized;
 }
 
-static int setPixel (uint16_t x_pixel, uint16_t y_pixel, color_t color);
-
 void ClearFrameBuffer (color_t color) {
     uint32_t x, y;
     
@@ -84,7 +82,7 @@ void ClearFrameBuffer (color_t color) {
     framebuffer_push ();
 }
 
-static int setPixel (uint16_t x_pixel, uint16_t y_pixel, color_t color) {
+int SetPixel (uint16_t x_pixel, uint16_t y_pixel, color_t color) {
     frame_buffer_t pFrameBuffer = GetFrameBuffer ();
     // Return an error if we try to set a pixel out of bounds
     if (x_pixel > pFrameBuffer.m_uWidth ||
@@ -107,7 +105,7 @@ void HorizontalLine (color_t color, int x0, int x1, int y) {
     int x;
     
     for (x = x0; x < x1; x++) {
-        setPixel (x, y, color);
+        SetPixel (x, y, color);
     }
 }
 
@@ -115,7 +113,7 @@ void VerticalLine (color_t color, int y0, int y1, int x) {
     int y;
     
     for (y = y0; y < y1; y++) {
-        setPixel (x, y, color);
+        SetPixel (x, y, color);
     }
 }
 
@@ -165,6 +163,6 @@ void *int_memcpy (void *dest, const void *src, size_t n) {
 }
 
 int framebuffer_push (void) {
-    int_memcpy ((uint8_t*) frameBuffer.m_pBuffer,
-		pScreenPixels, SCREEN_SIZE);
+    return int_memcpy ((uint8_t*) frameBuffer.m_pBuffer,
+                       pScreenPixels, SCREEN_SIZE);
 }
