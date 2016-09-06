@@ -26,6 +26,7 @@ add_executable(../kernel.elf
 	atags.c
     console.c
 	cstartup.c
+    cstubs.c
 	framebuffer.c
 	interrupts.c
 	system_timer.c	

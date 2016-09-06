@@ -9,7 +9,7 @@
 set(CMAKE_SYSTEM_NAME		Generic)
 set(CMAKE_SYSTEM_PROCESSOR	BCM2386)
 
-set(TC_PATH	"/opt/cross/bin/")
+set(TC_PATH	"/usr/bin/")
 
 # The toolchain prefix for all toolchain executables
 set(CROSS_COMPILE arm-none-eabi-)
